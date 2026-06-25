@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>产品介绍 - 智神星</title>
+    <script src="js/translations.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+        }
+
+        .header {
+            position: fixed;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 60px);
+            max-width: 1400px;
+            height: 85px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 35px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            transition: all 0.3s ease;
+        }
+
+        .header.scrolled {
+            top: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 10px 0;
+        }
+
+        .logo:hover {
+            transform: scale(1.03);
+        }
+
+        .logo img {
+            height: 50px;
+            width: auto;
+            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.1));
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover img {
+            filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.15));
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: 35px;
+        }
+
+        .nav-item {
+            position: relative;
+            color: #555;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            padding: 12px 20px;
+            border-radius: 25px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-item:hover {
+            color: #333;
+            background: rgba(100, 100, 100, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .nav-item.active {
+            background: rgba(100, 100, 100, 0.12);
+            color: #333;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(100, 100, 100, 0.05);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.5s ease, height 0.5s ease;
+        }
+
+        .nav-item:hover::before {
+            width: 100px;
+            height: 100px;
+        }
+
+        .lang-switch {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: 15px;
+            padding: 4px 6px;
+            border-radius: 20px;
+            background: rgba(100, 100, 100, 0.06);
+            transition: all 0.3s ease;
+        }
+
+        .lang-switch:hover {
+            background: rgba(100, 100, 100, 0.1);
+        }
+
+        .lang-btn {
+            padding: 7px 16px;
+            border: none;
+            border-radius: 18px;
+            background: transparent;
+            color: #666;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .lang-btn.active {
+            background: #444;
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .lang-btn:hover:not(.active) {
+            color: #333;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .content {
+            position: relative;
+            z-index: 100;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .product-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .product-section {
+            width: 100%;
+            height: 100%;
+            padding: 150px 60px 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform: translateY(0);
+            opacity: 1;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
+            z-index: 1;
+        }
+
+        .section-iot {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #dee2e6 100%);
+            overflow: hidden;
+        }
+
+        .section-iot .bg-animation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+        }
+
+        .section-iot .sensor-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(52, 152, 219, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(52, 152, 219, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridPulse 8s ease-in-out infinite;
+        }
+
+        @keyframes gridPulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 0.8; }
+        }
+
+        .section-iot .device-icon {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border: 2px solid rgba(52, 152, 219, 0.4);
+            border-radius: 8px;
+            animation: devicePulse 4s ease-in-out infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .section-iot .device-icon::before {
+            content: '';
+            width: 12px;
+            height: 12px;
+            background: rgba(52, 152, 219, 0.6);
+            border-radius: 50%;
+            animation: iconGlow 2s ease-in-out infinite;
+        }
+
+        .section-iot .device-icon:nth-child(1) { top: 15%; left: 10%; animation-delay: 0s; }
+        .section-iot .device-icon:nth-child(2) { top: 35%; left: 5%; animation-delay: 0.5s; }
+        .section-iot .device-icon:nth-child(3) { top: 55%; left: 12%; animation-delay: 1s; }
+        .section-iot .device-icon:nth-child(4) { top: 75%; left: 8%; animation-delay: 1.5s; }
+        .section-iot .device-icon:nth-child(5) { top: 25%; left: 25%; animation-delay: 2s; }
+        .section-iot .device-icon:nth-child(6) { top: 65%; left: 22%; animation-delay: 2.5s; }
+
+        @keyframes devicePulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; border-color: rgba(52, 152, 219, 0.3); }
+            50% { transform: scale(1.1); opacity: 0.8; border-color: rgba(52, 152, 219, 0.6); }
+        }
+
+        @keyframes iconGlow {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.3); opacity: 0.9; }
+        }
+
+        .section-iot .connection-path {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(52, 152, 219, 0.4), rgba(52, 152, 219, 0.1));
+            transform-origin: left center;
+        }
+
+        .section-iot .connection-path:nth-child(1) { top: 25%; left: 14%; width: 10%; animation: pathGlow 3s ease-in-out infinite; }
+        .section-iot .connection-path:nth-child(2) { top: 45%; left: 17%; width: 8%; animation: pathGlow 3s ease-in-out infinite 0.5s; }
+        .section-iot .connection-path:nth-child(3) { top: 65%; left: 20%; width: 12%; animation: pathGlow 3s ease-in-out infinite 1s; }
+
+        @keyframes pathGlow {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 0.6; }
+        }
+
+        .section-iot .data-packet {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: rgba(52, 152, 219, 0.8);
+            border-radius: 50%;
+            animation: dataMove 5s linear infinite;
+            box-shadow: 0 0 8px rgba(52, 152, 219, 0.5);
+        }
+
+        .section-iot .data-packet:nth-child(1) { top: 25%; animation-delay: 0s; }
+        .section-iot .data-packet:nth-child(2) { top: 45%; animation-delay: 1.5s; }
+        .section-iot .data-packet:nth-child(3) { top: 65%; animation-delay: 3s; }
+
+        @keyframes dataMove {
+            0% { left: 14%; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { left: 24%; opacity: 0; }
+        }
+
+        .section-iot .wifi-signal {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            animation: wifiSpin 10s linear infinite;
+        }
+
+        .section-iot .wifi-signal:nth-child(1) {
+            top: 30%;
+            left: 35%;
+            border: 2px solid rgba(52, 152, 219, 0.2);
+        }
+
+        .section-iot .wifi-signal:nth-child(1)::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70%;
+            height: 70%;
+            border-radius: 50%;
+            border: 2px solid rgba(52, 152, 219, 0.25);
+        }
+
+        .section-iot .wifi-signal:nth-child(1)::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40%;
+            height: 40%;
+            border-radius: 50%;
+            background: rgba(52, 152, 219, 0.3);
+        }
+
+        @keyframes wifiSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .section-iot .radar-sweep {
+            position: absolute;
+            top: 55%;
+            left: 30%;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 1px solid rgba(52, 152, 219, 0.15);
+            overflow: hidden;
+        }
+
+        .section-iot .radar-sweep::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 50%;
+            height: 50%;
+            background: linear-gradient(45deg, rgba(52, 152, 219, 0.3), transparent);
+            transform-origin: top left;
+            animation: radarScan 3s linear infinite;
+        }
+
+        @keyframes radarScan {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .section-iot .gradient-overlay {
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(52, 152, 219, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .section-bigdata {
+            background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 50%, #e8e8e8 100%);
+            overflow: hidden;
+        }
+
+        .section-bigdata .bg-animation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+        }
+
+        .section-bigdata .data-flow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 200%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(
+                    90deg,
+                    transparent 0px,
+                    transparent 4px,
+                    rgba(155, 89, 182, 0.05) 4px,
+                    rgba(155, 89, 182, 0.05) 8px
+                );
+            animation: flowMove 20s linear infinite;
+        }
+
+        @keyframes flowMove {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .section-bigdata .data-bar {
+            position: absolute;
+            bottom: 0;
+            background: rgba(155, 89, 182, 0.2);
+            animation: barGrow 3s ease-in-out infinite;
+        }
+
+        .section-bigdata .data-bar:nth-child(1) { left: 8%; width: 3%; animation-delay: 0s; }
+        .section-bigdata .data-bar:nth-child(2) { left: 12%; width: 2%; animation-delay: 0.3s; }
+        .section-bigdata .data-bar:nth-child(3) { left: 16%; width: 2.5%; animation-delay: 0.6s; }
+        .section-bigdata .data-bar:nth-child(4) { left: 20%; width: 3%; animation-delay: 0.9s; }
+        .section-bigdata .data-bar:nth-child(5) { left: 24%; width: 2%; animation-delay: 1.2s; }
+        .section-bigdata .data-bar:nth-child(6) { left: 28%; width: 2.5%; animation-delay: 1.5s; }
+        .section-bigdata .data-bar:nth-child(7) { left: 32%; width: 2%; animation-delay: 1.8s; }
+        .section-bigdata .data-bar:nth-child(8) { left: 36%; width: 3%; animation-delay: 2.1s; }
+
+        @keyframes barGrow {
+            0%, 100% { height: 10%; opacity: 0.3; }
+            50% { height: 40%; opacity: 0.6; }
+        }
+
+        .section-bigdata .hex-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='28' height='49' viewBox='0 0 28 49' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%239b59b6' fill-opacity='0.05' fill-rule='evenodd' d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.98-7.5V0h-2v6.35L0 12.69v2.3zm0 18.5L12.98 41v8h-2v-6.85L0 35.81v-2.3zM15 0v7.5L27.99 15H28v-2.31h-.01L17 6.35V0h-2zm0 49v-8l12.99-7.5H28v2.31h-.01L17 42.15V49h-2z'/%3E%3C/svg%3E");
+            opacity: 0.4;
+        }
+
+        .section-bigdata .glow-circle {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            animation: circleFloat 15s ease-in-out infinite;
+        }
+
+        .section-bigdata .glow-circle:nth-child(1) {
+            width: 500px;
+            height: 500px;
+            top: -150px;
+            right: -80px;
+            background: radial-gradient(circle, rgba(155, 89, 182, 0.15) 0%, transparent 70%);
+            animation-delay: 0s;
+        }
+
+        .section-bigdata .glow-circle:nth-child(2) {
+            width: 400px;
+            height: 400px;
+            bottom: -100px;
+            left: -50px;
+            background: radial-gradient(circle, rgba(142, 68, 173, 0.12) 0%, transparent 70%);
+            animation-delay: 5s;
+        }
+
+        @keyframes circleFloat {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(50px, -50px); }
+        }
+
+        .section-ai {
+            background: linear-gradient(135deg, #fafafa 0%, #f0f0f0 50%, #e5e5e5 100%);
+            overflow: hidden;
+        }
+
+        .section-ai .bg-animation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+        }
+
+        .section-ai .matrix-rain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            font-family: monospace;
+            font-size: 14px;
+            color: rgba(241, 196, 15, 0.15);
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .section-ai .matrix-column {
+            position: absolute;
+            top: -100%;
+            animation: matrixFall 15s linear infinite;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+        }
+
+        .section-ai .matrix-column:nth-child(1) { left: 5%; animation-delay: 0s; }
+        .section-ai .matrix-column:nth-child(2) { left: 12%; animation-delay: 2s; }
+        .section-ai .matrix-column:nth-child(3) { left: 19%; animation-delay: 4s; }
+        .section-ai .matrix-column:nth-child(4) { left: 26%; animation-delay: 6s; }
+        .section-ai .matrix-column:nth-child(5) { left: 33%; animation-delay: 8s; }
+
+        @keyframes matrixFall {
+            0% { top: -100%; opacity: 0; }
+            10% { opacity: 0.5; }
+            90% { opacity: 0.5; }
+            100% { top: 100%; opacity: 0; }
+        }
+
+        .section-ai .robot-face {
+            position: absolute;
+            top: 20%;
+            left: 15%;
+            width: 140px;
+            height: 100px;
+            animation: robotPulse 4s ease-in-out infinite;
+        }
+
+        .section-ai .robot-face::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: rgba(241, 196, 15, 0.3);
+        }
+
+        .section-ai .robot-eye {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border: 2px solid rgba(241, 196, 15, 0.5);
+            border-radius: 50%;
+            top: 30%;
+            animation: eyeGlow 2s ease-in-out infinite;
+        }
+
+        .section-ai .robot-eye:nth-child(1) { left: 15%; }
+        .section-ai .robot-eye:nth-child(2) { right: 15%; }
+
+        .section-ai .robot-eye::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 10px;
+            background: rgba(241, 196, 15, 0.7);
+            border-radius: 50%;
+        }
+
+        @keyframes eyeGlow {
+            0%, 100% { border-color: rgba(241, 196, 15, 0.3); }
+            50% { border-color: rgba(241, 196, 15, 0.8); box-shadow: 0 0 15px rgba(241, 196, 15, 0.4); }
+        }
+
+        .section-ai .robot-face::after {
+            content: '';
+            position: absolute;
+            bottom: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 3px;
+            background: rgba(241, 196, 15, 0.3);
+            border-radius: 2px;
+        }
+
+        @keyframes robotPulse {
+            0%, 100% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.02); opacity: 0.8; }
+        }
+
+        .section-ai .circuit-pattern {
+            position: absolute;
+            top: 50%;
+            left: 5%;
+            width: 180px;
+            height: 200px;
+            opacity: 0.4;
+        }
+
+        .section-ai .circuit-line {
+            position: absolute;
+            background: rgba(241, 196, 15, 0.3);
+        }
+
+        .section-ai .circuit-line.horizontal {
+            height: 1px;
+        }
+
+        .section-ai .circuit-line.vertical {
+            width: 1px;
+        }
+
+        .section-ai .circuit-line:nth-child(1) { top: 0; left: 0; width: 100%; height: 1px; }
+        .section-ai .circuit-line:nth-child(2) { top: 25%; left: 0; width: 100%; height: 1px; }
+        .section-ai .circuit-line:nth-child(3) { top: 50%; left: 0; width: 100%; height: 1px; }
+        .section-ai .circuit-line:nth-child(4) { top: 75%; left: 0; width: 100%; height: 1px; }
+        .section-ai .circuit-line:nth-child(5) { top: 0; left: 0; width: 1px; height: 100%; }
+        .section-ai .circuit-line:nth-child(6) { top: 0; left: 33%; width: 1px; height: 100%; }
+        .section-ai .circuit-line:nth-child(7) { top: 0; left: 66%; width: 1px; height: 100%; }
+        .section-ai .circuit-line:nth-child(8) { top: 0; left: 100%; width: 1px; height: 100%; }
+
+        .section-ai .circuit-node {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: rgba(241, 196, 15, 0.5);
+            border-radius: 50%;
+            animation: circuitGlow 3s ease-in-out infinite;
+        }
+
+        .section-ai .circuit-node:nth-child(1) { top: 25%; left: 33%; animation-delay: 0s; }
+        .section-ai .circuit-node:nth-child(2) { top: 50%; left: 66%; animation-delay: 0.5s; }
+        .section-ai .circuit-node:nth-child(3) { top: 75%; left: 33%; animation-delay: 1s; }
+        .section-ai .circuit-node:nth-child(4) { top: 25%; left: 66%; animation-delay: 1.5s; }
+        .section-ai .circuit-node:nth-child(5) { top: 50%; left: 33%; animation-delay: 2s; }
+
+        @keyframes circuitGlow {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 0.9; transform: scale(1.5); }
+        }
+
+        .section-ai .neural-network {
+            position: absolute;
+            top: 60%;
+            left: 22%;
+            width: 120px;
+            height: 100px;
+        }
+
+        .section-ai .neural-layer {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+
+        .section-ai .neural-layer:nth-child(1) { left: 0; }
+        .section-ai .neural-layer:nth-child(2) { left: 50%; transform: translateX(-50%); }
+        .section-ai .neural-layer:nth-child(3) { right: 0; }
+
+        .section-ai .neural-dot {
+            width: 8px;
+            height: 8px;
+            background: rgba(241, 196, 15, 0.6);
+            border-radius: 50%;
+            animation: neuralPulse 2.5s ease-in-out infinite;
+        }
+
+        .section-ai .neural-dot:nth-child(1) { animation-delay: 0s; }
+        .section-ai .neural-dot:nth-child(2) { animation-delay: 0.5s; }
+        .section-ai .neural-dot:nth-child(3) { animation-delay: 1s; }
+
+        @keyframes neuralPulse {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 0.9; transform: scale(1.3); }
+        }
+
+        .section-ai .neural-connection {
+            position: absolute;
+            height: 1px;
+            background: rgba(241, 196, 15, 0.2);
+            animation: connectionGlow 2s ease-in-out infinite;
+        }
+
+        .section-ai .neural-connection:nth-child(1) { top: 15%; left: 20%; width: 60%; animation-delay: 0s; }
+        .section-ai .neural-connection:nth-child(2) { top: 50%; left: 20%; width: 60%; animation-delay: 0.7s; }
+        .section-ai .neural-connection:nth-child(3) { top: 85%; left: 20%; width: 60%; animation-delay: 1.4s; }
+
+        @keyframes connectionGlow {
+            0%, 100% { opacity: 0.1; }
+            50% { opacity: 0.4; }
+        }
+
+        .section-ai .golden-glow {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(90px);
+            animation: glowMove 18s ease-in-out infinite;
+        }
+
+        .section-ai .golden-glow:nth-child(1) {
+            width: 550px;
+            height: 550px;
+            top: -180px;
+            right: -100px;
+            background: radial-gradient(circle, rgba(241, 196, 15, 0.12) 0%, transparent 70%);
+            animation-delay: 0s;
+        }
+
+        .section-ai .golden-glow:nth-child(2) {
+            width: 450px;
+            height: 450px;
+            bottom: -120px;
+            left: -80px;
+            background: radial-gradient(circle, rgba(230, 126, 34, 0.1) 0%, transparent 70%);
+            animation-delay: 6s;
+        }
+
+        @keyframes glowMove {
+            0%, 100% { transform: translate(0, 0); }
+            33% { transform: translate(60px, -60px); }
+            66% { transform: translate(-30px, 30px); }
+        }
+
+        .section-bigdata-content, .section-ai-content {
+            position: relative;
+            z-index: 10;
+            max-width: 1200px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-left: 50%;
+        }
+
+        .section-bigdata-text, .section-ai-text {
+            text-align: left;
+            color: #333;
+            max-width: 500px;
+        }
+
+        .section-bigdata-title, .section-ai-title {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            letter-spacing: 4px;
+        }
+
+        .section-bigdata-title {
+            background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-ai-title {
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-bigdata-subtitle, .section-ai-subtitle {
+            font-size: 16px;
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+            color: #666;
+        }
+
+        .section-bigdata-desc, .section-ai-desc {
+            font-size: 15px;
+            color: #555;
+            line-height: 2;
+            margin-bottom: 35px;
+        }
+
+        .section-bigdata-btn, .section-ai-btn {
+            display: inline-block;
+            padding: 15px 40px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .section-bigdata-btn {
+            background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(155, 89, 182, 0.3);
+        }
+
+        .section-bigdata-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(155, 89, 182, 0.5);
+        }
+
+        .section-ai-btn {
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(243, 156, 18, 0.3);
+        }
+
+        .section-ai-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(243, 156, 18, 0.5);
+        }
+
+        .product-section.hidden-up {
+            transform: translateY(-100%);
+            opacity: 0;
+            z-index: 1;
+        }
+
+        .product-section.hidden-down {
+            transform: translateY(100%);
+            opacity: 0;
+            z-index: 1;
+        }
+
+        .product-section.show {
+            transform: translateY(0);
+            opacity: 1;
+            z-index: 10;
+        }
+
+        .product-section-content {
+            max-width: 1200px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .section-iot-content {
+            position: relative;
+            z-index: 10;
+            max-width: 1200px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-left: 50%;
+        }
+
+        .section-iot-text {
+            text-align: left;
+            color: #333;
+            max-width: 500px;
+        }
+
+        .section-iot-title {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            letter-spacing: 4px;
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-iot-subtitle {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+        }
+
+        .section-iot-desc {
+            font-size: 15px;
+            color: #555;
+            line-height: 2;
+            margin-bottom: 35px;
+        }
+
+        .section-iot-btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 20px rgba(52, 152, 219, 0.3);
+        }
+
+        .section-iot-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(52, 152, 219, 0.5);
+        }
+
+        .section-iot-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .product-section-title {
+            font-size: 42px;
+            color: #333;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: 3px;
+        }
+
+        .product-section-desc {
+            font-size: 18px;
+            color: #666;
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .scroll-arrow {
+            position: fixed;
+            right: 40px;
+            bottom: 40px;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            z-index: 999;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+        }
+
+        .scroll-arrow.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .scroll-arrow::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .scroll-arrow:hover::before {
+            background: #fff;
+            box-shadow: 0 6px 30px rgba(0, 0, 0, 0.25);
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        .scroll-arrow-icon {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #555;
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-arrow:hover .scroll-arrow-icon {
+            color: #333;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-8px);
+            }
+            60% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .footer {
+            background: linear-gradient(135deg, #4a4a4a 0%, #333 100%);
+            color: #fff;
+            padding: 50px 0 25px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            transform: translateY(100%);
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .footer.show {
+            transform: translateY(0);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            padding: 0 30px;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 200px;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            letter-spacing: 2px;
+        }
+
+        .contact-info p {
+            font-size: 13px;
+            line-height: 2;
+            color: rgba(255, 255, 255, 0.8);
+            margin: 8px 0;
+        }
+
+        .partner-list, .product-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .partner-list li, .product-list li {
+            font-size: 13px;
+            line-height: 2.2;
+            color: rgba(255, 255, 255, 0.8);
+            transition: color 0.3s;
+        }
+
+        .partner-list li:hover, .product-list li:hover {
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .footer-divider {
+            width: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 0 10px;
+        }
+
+        .qr-section {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 15px;
+        }
+
+        .qr-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            width: 100px;
+        }
+
+        .qr-label {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            width: 100%;
+        }
+
+        .qr-code {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-bottom p {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <a href="#" title="智神星">
+                <img src="images/logo-default-169x24.png" alt="智神星">
+            </a>
+        </div>
+        <nav class="nav">
+            <a href="index.html" class="nav-item" data-lang-key="home">网站首页</a>
+            <a href="about.html" class="nav-item" data-lang-key="about">公司简介</a>
+            <a href="product-intro.html" class="nav-item active" data-lang-key="products">产品与服务</a>
+            <div class="lang-switch">
+                <button class="lang-btn active" data-lang="zh" onclick="switchLang('zh')">中文</button>
+                <button class="lang-btn" data-lang="en" onclick="switchLang('en')">English</button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="content">
+        <div class="product-container" id="productContainer">
+            <section class="product-section show section-iot" id="section-0">
+                <div class="bg-animation">
+                    <div class="sensor-grid"></div>
+                    <div class="device-icon"></div>
+                    <div class="device-icon"></div>
+                    <div class="device-icon"></div>
+                    <div class="device-icon"></div>
+                    <div class="device-icon"></div>
+                    <div class="device-icon"></div>
+                    <div class="connection-path"></div>
+                    <div class="connection-path"></div>
+                    <div class="connection-path"></div>
+                    <div class="data-packet"></div>
+                    <div class="data-packet"></div>
+                    <div class="data-packet"></div>
+                </div>
+                <div class="wifi-signal"></div>
+                <div class="radar-sweep"></div>
+                <div class="gradient-overlay"></div>
+                <div class="section-iot-content">
+                    <div class="section-iot-text">
+                        <div class="section-iot-subtitle">SMART IOT SOLUTIONS</div>
+                        <h2 class="section-iot-title">物联网应用</h2>
+                        <p class="section-iot-desc">公司基于物联网技术，为企业提供智能化解决方案。通过传感器网络、数据采集与分析，实现设备远程监控、智能控制、能耗管理等功能。帮助客户提升运营效率，降低成本，构建智能互联的数字化生态系统。</p>
+                        <a href="iot-product.html" class="section-iot-btn">查看案例</a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="product-section hidden-down section-bigdata" id="section-1">
+                <div class="bg-animation">
+                    <div class="data-flow"></div>
+                    <div class="hex-pattern"></div>
+                    <div class="glow-circle"></div>
+                    <div class="glow-circle"></div>
+                </div>
+                <div class="data-bar"></div>
+                <div class="data-bar"></div>
+                <div class="data-bar"></div>
+                <div class="data-bar"></div>
+                <div class="data-bar"></div>
+                <div class="data-bar"></div>
+                <div class="data-bar"></div>
+                <div class="data-bar"></div>
+                <div class="section-bigdata-content">
+                    <div class="section-bigdata-text">
+                        <div class="section-bigdata-subtitle">BIG DATA ANALYTICS</div>
+                        <h2 class="section-bigdata-title">大数据技术</h2>
+                        <p class="section-bigdata-desc">公司运用先进的大数据分析技术，帮助企业挖掘数据价值。通过数据采集、存储、处理与分析，实现精准洞察、预测分析、智能决策等功能。助力企业在海量数据中发现商机，优化业务流程，提升竞争力。</p>
+                        <a href="bigdata-product.html" class="section-bigdata-btn">查看案例</a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="product-section hidden-down section-ai" id="section-2">
+                <div class="bg-animation">
+                    <div class="matrix-rain">
+                        <div class="matrix-column">010101010101010101</div>
+                        <div class="matrix-column">101010101010101010</div>
+                        <div class="matrix-column">010101010101010101</div>
+                        <div class="matrix-column">101010101010101010</div>
+                        <div class="matrix-column">010101010101010101</div>
+                    </div>
+                    <div class="golden-glow"></div>
+                    <div class="golden-glow"></div>
+                </div>
+                <div class="robot-face">
+                    <div class="robot-eye"></div>
+                    <div class="robot-eye"></div>
+                </div>
+                <div class="circuit-pattern">
+                    <div class="circuit-line"></div>
+                    <div class="circuit-line"></div>
+                    <div class="circuit-line"></div>
+                    <div class="circuit-line"></div>
+                    <div class="circuit-line"></div>
+                    <div class="circuit-line"></div>
+                    <div class="circuit-line"></div>
+                    <div class="circuit-line"></div>
+                    <div class="circuit-node"></div>
+                    <div class="circuit-node"></div>
+                    <div class="circuit-node"></div>
+                    <div class="circuit-node"></div>
+                    <div class="circuit-node"></div>
+                </div>
+                <div class="neural-network">
+                    <div class="neural-layer">
+                        <div class="neural-dot"></div>
+                        <div class="neural-dot"></div>
+                        <div class="neural-dot"></div>
+                    </div>
+                    <div class="neural-layer">
+                        <div class="neural-dot"></div>
+                        <div class="neural-dot"></div>
+                        <div class="neural-dot"></div>
+                    </div>
+                    <div class="neural-layer">
+                        <div class="neural-dot"></div>
+                        <div class="neural-dot"></div>
+                        <div class="neural-dot"></div>
+                    </div>
+                    <div class="neural-connection"></div>
+                    <div class="neural-connection"></div>
+                    <div class="neural-connection"></div>
+                </div>
+                <div class="section-ai-content">
+                    <div class="section-ai-text">
+                        <div class="section-ai-subtitle">ARTIFICIAL INTELLIGENCE</div>
+                        <h2 class="section-ai-title">人工智能</h2>
+                        <p class="section-ai-desc">公司深耕人工智能领域，提供机器学习、深度学习、自然语言处理等技术解决方案。通过构建智能模型和算法，实现自动化、智能化的业务应用。帮助企业提升效率，降低成本，开创智能化运营新范式。</p>
+                        <a href="ai-product.html" class="section-ai-btn">查看案例</a>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <div class="scroll-arrow" id="scrollArrow" onclick="scrollToNext()">
+        <div class="scroll-arrow-icon">↓</div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="section-title" data-lang-role="footer" data-lang-key="contact">联系我们</div>
+                <div class="contact-info">
+                    <p data-lang-role="footer" data-lang-key="company">南京智神星网络科技有限公司</p>
+                    <p data-lang-role="footer" data-lang-key="phone">电话：025-85550510</p>
+                    <p data-lang-role="footer" data-lang-key="email">邮箱：postmaster@xpallas.com</p>
+                    <p data-lang-role="footer" data-lang-key="address">南京市建邺区中和路121号云座中和1008室</p>
+                </div>
+            </div>
+
+            <div class="footer-divider"></div>
+
+            <div class="footer-section">
+                <div class="section-title" data-lang-role="footer" data-lang-key="partners">合作伙伴</div>
+                <ul class="partner-list" data-lang-role="footer" data-lang-key="partnerList">
+                    <li>南京大学人工智能学院</li>
+                    <li>东南大学</li>
+                    <li>数字融合(北京)科技有限公司</li>
+                    <li>海康机器人</li>
+                    <li>AMK</li>
+                    <li>美国Boxnearby</li>
+                </ul>
+            </div>
+
+            <div class="footer-divider"></div>
+
+            <div class="footer-section">
+                <div class="section-title" data-lang-role="footer" data-lang-key="products">产品及解决方案</div>
+                <ul class="product-list" data-lang-role="footer" data-lang-key="productList">
+                    <li>物联网应用</li>
+                    <li>大数据分析</li>
+                    <li>人工智能</li>
+                </ul>
+            </div>
+
+            <div class="footer-divider"></div>
+
+            <div class="footer-section qr-section">
+                <div class="qr-item">
+                    <span class="qr-label" data-lang-role="footer" data-lang-key="technical">技术支持</span>
+                    <img src="images/aidpt.png" alt="技术支持" class="qr-code">
+                </div>
+                <div class="qr-item">
+                    <span class="qr-label" data-lang-role="footer" data-lang-key="follow">关注我们</span>
+                    <img src="images/qrcode.jpg" alt="关注我们" class="qr-code">
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p data-lang-role="footer" data-lang-key="copyright">© 2026 南京智神星网络科技有限公司 保留所有权利,苏ICP备18832355号-1</p>
+        </div>
+    </footer>
+
+    <script>
+        let currentSection = 0;
+        const totalSections = 3;
+        let isAnimating = false;
+        let footerShown = false;
+
+        function scrollToNext() {
+            if (isAnimating) return;
+            
+            if (currentSection < totalSections - 1) {
+                changeSection(1);
+            } else if (currentSection === totalSections - 1 && !footerShown) {
+                showFooter();
+            }
+        }
+
+        function scrollToPrev() {
+            if (isAnimating) return;
+
+            if (footerShown) {
+                hideFooter();
+            } else if (currentSection > 0) {
+                changeSection(-1);
+            }
+        }
+
+        function changeSection(direction) {
+            isAnimating = true;
+            
+            const nextSection = currentSection + direction;
+            const currentEl = document.getElementById('section-' + currentSection);
+            const nextEl = document.getElementById('section-' + nextSection);
+            const scrollArrow = document.getElementById('scrollArrow');
+
+            if (direction === 1) {
+                currentEl.classList.remove('show');
+                currentEl.classList.add('hidden-up');
+                nextEl.classList.remove('hidden-down');
+                nextEl.classList.add('show');
+            } else {
+                currentEl.classList.remove('show');
+                currentEl.classList.add('hidden-down');
+                nextEl.classList.remove('hidden-up');
+                nextEl.classList.add('show');
+            }
+
+            currentSection = nextSection;
+
+            if (currentSection < totalSections - 1) {
+                scrollArrow.classList.add('show');
+            } else {
+                scrollArrow.classList.add('show');
+            }
+
+            setTimeout(() => {
+                isAnimating = false;
+            }, 800);
+        }
+
+        function showFooter() {
+            isAnimating = true;
+            footerShown = true;
+            
+            const footer = document.querySelector('.footer');
+            const scrollArrow = document.getElementById('scrollArrow');
+            
+            footer.classList.add('show');
+            scrollArrow.classList.remove('show');
+
+            setTimeout(() => {
+                isAnimating = false;
+            }, 800);
+        }
+
+        function hideFooter() {
+            isAnimating = true;
+            footerShown = false;
+            
+            const footer = document.querySelector('.footer');
+            const scrollArrow = document.getElementById('scrollArrow');
+            
+            footer.classList.remove('show');
+            scrollArrow.classList.add('show');
+
+            setTimeout(() => {
+                isAnimating = false;
+            }, 800);
+        }
+
+        function handleWheel(e) {
+            if (isAnimating) {
+                e.preventDefault();
+                return;
+            }
+
+            e.preventDefault();
+
+            if (e.deltaY > 0) {
+                scrollToNext();
+            } else if (e.deltaY < 0) {
+                scrollToPrev();
+            }
+        }
+
+        window.addEventListener('wheel', handleWheel, { passive: false });
+
+        function updatePageContent(lang) {
+            var titleEl = document.querySelector('title');
+            if (titleEl) {
+                titleEl.textContent = translations[lang].productIntro.title + ' - ' + (lang === 'zh' ? '智神星' : 'XPallas');
+            }
+
+            var iotTitle = document.querySelector('.section-iot-title');
+            if (iotTitle) {
+                iotTitle.textContent = translations[lang].productIntro.iot.title;
+            }
+
+            var iotDesc = document.querySelector('.section-iot-desc');
+            if (iotDesc) {
+                iotDesc.textContent = translations[lang].productIntro.iot.desc;
+            }
+
+            var iotBtn = document.querySelector('.section-iot-btn');
+            if (iotBtn) {
+                iotBtn.textContent = translations[lang].productIntro.iot.btn;
+            }
+
+            var bigdataTitle = document.querySelector('.section-bigdata-title');
+            if (bigdataTitle) {
+                bigdataTitle.textContent = translations[lang].productIntro.bigdata.title;
+            }
+
+            var bigdataDesc = document.querySelector('.section-bigdata-desc');
+            if (bigdataDesc) {
+                bigdataDesc.textContent = translations[lang].productIntro.bigdata.desc;
+            }
+
+            var bigdataBtn = document.querySelector('.section-bigdata-btn');
+            if (bigdataBtn) {
+                bigdataBtn.textContent = translations[lang].productIntro.bigdata.btn;
+            }
+
+            var aiTitle = document.querySelector('.section-ai-title');
+            if (aiTitle) {
+                aiTitle.textContent = translations[lang].productIntro.ai.title;
+            }
+
+            var aiDesc = document.querySelector('.section-ai-desc');
+            if (aiDesc) {
+                aiDesc.textContent = translations[lang].productIntro.ai.desc;
+            }
+
+            var aiBtn = document.querySelector('.section-ai-btn');
+            if (aiBtn) {
+                aiBtn.textContent = translations[lang].productIntro.ai.btn;
+            }
+        }
+
+        window.addEventListener('load', function() {
+            document.getElementById('scrollArrow').classList.add('show');
+        });
+    </script>
+</body>
+</html>

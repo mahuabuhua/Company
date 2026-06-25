@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>物联网应用 - 智神星</title>
+    <script src="js/translations.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        .header {
+            position: fixed;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 60px);
+            max-width: 1400px;
+            height: 85px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 35px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            transition: all 0.3s ease;
+        }
+
+        .header.scrolled {
+            top: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 10px 0;
+        }
+
+        .logo:hover {
+            transform: scale(1.03);
+        }
+
+        .logo img {
+            height: 50px;
+            width: auto;
+            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.1));
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover img {
+            filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.15));
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: 35px;
+        }
+
+        .nav-item {
+            position: relative;
+            color: #555;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            padding: 12px 20px;
+            border-radius: 25px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-item:hover {
+            color: #333;
+            background: rgba(100, 100, 100, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .nav-item.active {
+            background: rgba(100, 100, 100, 0.12);
+            color: #333;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(100, 100, 100, 0.05);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.5s ease, height 0.5s ease;
+        }
+
+        .nav-item:hover::before {
+            width: 100px;
+            height: 100px;
+        }
+
+        .lang-switch {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: 15px;
+            padding: 4px 6px;
+            border-radius: 20px;
+            background: rgba(100, 100, 100, 0.06);
+            transition: all 0.3s ease;
+        }
+
+        .lang-switch:hover {
+            background: rgba(100, 100, 100, 0.1);
+        }
+
+        .lang-btn {
+            padding: 7px 16px;
+            border: none;
+            border-radius: 18px;
+            background: transparent;
+            color: #666;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .lang-btn.active {
+            background: #444;
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .lang-btn:hover:not(.active) {
+            color: #333;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .content {
+            position: relative;
+            z-index: 100;
+            margin-top: 90px;
+            min-height: calc(100vh - 70px);
+            padding: 60px 80px;
+            background: #f8f9fa;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .page-title {
+            font-size: 42px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        .page-subtitle {
+            font-size: 16px;
+            color: #7f8c8d;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        .cases-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 40px;
+        }
+
+        .case-card {
+            background: #fff;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .case-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+        }
+
+        .case-image-wrapper {
+            position: relative;
+            height: 320px;
+            overflow: hidden;
+        }
+
+        .case-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .case-card:hover .case-image {
+            transform: scale(1.05);
+        }
+
+        .case-image-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to top, rgba(44, 62, 80, 0.7), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            display: flex;
+            align-items: flex-end;
+            padding: 30px;
+        }
+
+        .case-card:hover .case-image-overlay {
+            opacity: 1;
+        }
+
+        .case-category {
+            display: inline-block;
+            padding: 6px 16px;
+            background: rgba(52, 152, 219, 0.9);
+            color: #fff;
+            font-size: 12px;
+            font-weight: 500;
+            border-radius: 20px;
+        }
+
+        .case-content {
+            padding: 35px;
+        }
+
+        .case-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 18px;
+            transition: color 0.3s ease;
+        }
+
+        .case-card:hover .case-title {
+            color: #3498db;
+        }
+
+        .case-desc {
+            font-size: 14px;
+            color: #7f8c8d;
+            line-height: 1.9;
+            margin: 0;
+        }
+
+        .case-highlight {
+            background: linear-gradient(135deg, #e8f4fc 0%, #f0f8ff 100%);
+            border-left: 4px solid #3498db;
+            padding: 20px 25px;
+            margin-top: 20px;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .case-highlight p {
+            font-size: 13px;
+            color: #5a6c7d;
+            margin: 0;
+            font-style: italic;
+        }
+
+        .footer {
+            background: linear-gradient(135deg, #4a4a4a 0%, #333 100%);
+            color: #fff;
+            padding: 50px 0 25px;
+            position: relative;
+            z-index: 100;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            padding: 0 30px;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 200px;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #fff;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 1px;
+        }
+
+        .contact-info p {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 10px;
+            line-height: 1.8;
+        }
+
+        .partner-list, .product-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .partner-list li, .product-list li {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .partner-list li:hover, .product-list li:hover {
+            color: #fff;
+            padding-left: 5px;
+        }
+
+        .footer-divider {
+            width: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 0 10px;
+        }
+
+        .qr-section {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 15px;
+        }
+
+        .qr-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            width: 100px;
+        }
+
+        .qr-label {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            width: 100%;
+        }
+
+        .qr-code {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-bottom p {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <a href="#" title="智神星">
+                <img src="images/logo-default-169x24.png" alt="智神星">
+            </a>
+        </div>
+        <nav class="nav">
+            <a href="index.html" class="nav-item" data-lang-key="home">网站首页</a>
+            <a href="about.html" class="nav-item" data-lang-key="about">公司简介</a>
+            <a href="product-intro.html" class="nav-item active" data-lang-key="products">产品与服务</a>
+            <div class="lang-switch">
+                <button class="lang-btn active" data-lang="zh" onclick="switchLang('zh')">中文</button>
+                <button class="lang-btn" data-lang="en" onclick="switchLang('en')">English</button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="content">
+        <div class="page-header">
+            <h1 class="page-title">物联网应用案例</h1>
+            <p class="page-subtitle">公司基于物联网技术，为企业提供智能化解决方案，助力客户实现数字化转型</p>
+        </div>
+
+        <div class="cases-container">
+            <div class="case-card">
+                <div class="case-image-wrapper">
+                    <img src="images/Boxnearby项目/smart_locker.jpg" alt="智能云柜系统" class="case-image">
+                    <div class="case-image-overlay">
+                        <span class="case-category">智能仓储</span>
+                    </div>
+                </div>
+                <div class="case-content">
+                    <h3 class="case-title">智能云柜系统</h3>
+                    <p class="case-desc">智能云柜系统是一套基于物联网技术的智能储物储物柜解决方案，支持远程监控、智能开锁、实时状态查询等功能。系统已在美国加州正式上线运营。</p>
+                    <div class="case-highlight">
+                        <p>核心功能：远程监控 · 智能开锁 · 实时状态查询 · 数据统计分析</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="case-card">
+                <div class="case-image-wrapper">
+                    <img src="images/smart_factory.jpg" alt="工业控制系统" class="case-image">
+                    <div class="case-image-overlay">
+                        <span class="case-category">智能制造</span>
+                    </div>
+                </div>
+                <div class="case-content">
+                    <h3 class="case-title">工业控制系统</h3>
+                    <p class="case-desc">工业控制系统专注于德国AMK电机的工业应用开发，广泛应用于烟草、包装、塑料、印刷、弹簧、电梯、搬运机械以及机床等智能制造领域。</p>
+                    <div class="case-highlight">
+                        <p>应用领域：烟草 · 包装 · 塑料 · 印刷 · 机床 · 电梯</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="case-card">
+                <div class="case-image-wrapper">
+                    <img src="images/smart_senior.jpg" alt="智慧老年卡管理平台" class="case-image">
+                    <div class="case-image-overlay">
+                        <span class="case-category">智慧城市</span>
+                    </div>
+                </div>
+                <div class="case-content">
+                    <h3 class="case-title">智慧老年卡管理平台</h3>
+                    <p class="case-desc">智慧老年卡管理平台是为了南京市秦淮区定制开发的老年卡办理平台系统，更方便快捷地为老年人服务，实现全区通办，一站式办理《江苏省老年人优待证》的服务平台。</p>
+                    <div class="case-highlight">
+                        <p>服务特色：全区通办 · 一站式办理 · 便捷服务 · 数字化管理</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="case-card">
+                <div class="case-image-wrapper">
+                    <img src="images/防疫终端/20210608_232639-uid-IMG_4237.JPG" alt="智能防疫终端" class="case-image">
+                    <div class="case-image-overlay">
+                        <span class="case-category">智能安防</span>
+                    </div>
+                </div>
+                <div class="case-content">
+                    <h3 class="case-title">智能防疫终端</h3>
+                    <p class="case-desc">智能防疫终端实现单位人、车出入管理，通过人防、技防相结合，实现常态化防疫与事后可追溯，打造安全、快捷、智能的综合防疫解决方案。</p>
+                    <div class="case-highlight">
+                        <p>核心能力：人脸识别 · 体温检测 · 出入管理 · 数据追溯</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="case-card">
+                <div class="case-image-wrapper">
+                    <img src="images/海颂/图片10.png" alt="超声波焊机项目" class="case-image">
+                    <div class="case-image-overlay">
+                        <span class="case-category">工业自动化</span>
+                    </div>
+                </div>
+                <div class="case-content">
+                    <h3 class="case-title">超声波焊机项目</h3>
+                    <p class="case-desc">本项目为超声波焊机提供专用软件系统定制开发服务，专注于焊接参数精准控制、实时监测与数据追溯。软件系统采用模块化架构，支持多设备通讯、焊接参数智能优化及过程数据采集分析。</p>
+                    <div class="case-highlight">
+                        <p>技术优势：参数精准控制 · 实时监测 · 智能优化 · MES系统对接</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="section-title" data-lang-role="footer" data-lang-key="contact">联系我们</div>
+                <div class="contact-info">
+                    <p data-lang-role="footer" data-lang-key="company">南京智神星网络科技有限公司</p>
+                    <p data-lang-role="footer" data-lang-key="phone">电话：025-85550510</p>
+                    <p data-lang-role="footer" data-lang-key="email">邮箱：postmaster@xpallas.com</p>
+                    <p data-lang-role="footer" data-lang-key="address">南京市建邺区中和路121号云座中和1008室</p>
+                </div>
+            </div>
+
+            <div class="footer-divider"></div>
+
+            <div class="footer-section">
+                <div class="section-title" data-lang-role="footer" data-lang-key="partners">合作伙伴</div>
+                <ul class="partner-list" data-lang-role="footer" data-lang-key="partnerList">
+                    <li>南京大学人工智能学院</li>
+                    <li>东南大学</li>
+                    <li>数字融合(北京)科技有限公司</li>
+                    <li>海康机器人</li>
+                    <li>AMK</li>
+                    <li>美国Boxnearby</li>
+                </ul>
+            </div>
+
+            <div class="footer-divider"></div>
+
+            <div class="footer-section">
+                <div class="section-title" data-lang-role="footer" data-lang-key="products">产品及解决方案</div>
+                <ul class="product-list" data-lang-role="footer" data-lang-key="productList">
+                    <li>物联网应用</li>
+                    <li>大数据分析</li>
+                    <li>人工智能</li>
+                </ul>
+            </div>
+
+            <div class="footer-divider"></div>
+
+            <div class="footer-section qr-section">
+                <div class="qr-item">
+                    <span class="qr-label" data-lang-role="footer" data-lang-key="technical">技术支持</span>
+                    <img src="images/aidpt.png" alt="技术支持" class="qr-code">
+                </div>
+                <div class="qr-item">
+                    <span class="qr-label" data-lang-role="footer" data-lang-key="follow">关注我们</span>
+                    <img src="images/qrcode.jpg" alt="关注我们" class="qr-code">
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p data-lang-role="footer" data-lang-key="copyright">© 2026 南京智神星网络科技有限公司 保留所有权利,苏ICP备18832355号-1</p>
+        </div>
+    </footer>
+
+    <script>
+        function updatePageContent(lang) {
+            var titleEl = document.querySelector('title');
+            if (titleEl) {
+                titleEl.textContent = translations[lang].iotProduct.title + ' - ' + (lang === 'zh' ? '智神星' : 'XPallas');
+            }
+
+            var pageTitle = document.querySelector('.page-title');
+            if (pageTitle) {
+                pageTitle.textContent = translations[lang].iotProduct.title;
+            }
+
+            var pageSubtitle = document.querySelector('.page-subtitle');
+            if (pageSubtitle) {
+                pageSubtitle.textContent = translations[lang].iotProduct.subtitle;
+            }
+
+            var caseCards = document.querySelectorAll('.case-card');
+            var caseKeys = ['smartLocker', 'industrialControl', 'smartSenior', 'epidemicControl', 'ultrasonicWelder', 'diseaseControl'];
+            caseCards.forEach(function(card, index) {
+                var key = caseKeys[index];
+                if (key && translations[lang].iotProduct.cases[key]) {
+                    var category = card.querySelector('.case-category');
+                    var title = card.querySelector('.case-title');
+                    var desc = card.querySelector('.case-desc');
+                    var highlight = card.querySelector('.case-highlight p');
+                    if (category) category.textContent = translations[lang].iotProduct.cases[key].category;
+                    if (title) title.textContent = translations[lang].iotProduct.cases[key].title;
+                    if (desc) desc.textContent = translations[lang].iotProduct.cases[key].desc;
+                    if (highlight) highlight.textContent = translations[lang].iotProduct.cases[key].highlight;
+                }
+            });
+        }
+    </script>
+</body>
+</html>

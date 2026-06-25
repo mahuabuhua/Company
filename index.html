@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智神星</title>
+    <script src="js/translations.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        .header {
+            position: fixed;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 60px);
+            max-width: 1400px;
+            height: 85px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 35px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            transition: all 0.3s ease;
+        }
+
+        .header.scrolled {
+            top: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 10px 0;
+        }
+
+        .logo:hover {
+            transform: scale(1.03);
+        }
+
+        .logo img {
+            height: 50px;
+            width: auto;
+            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.1));
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover img {
+            filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.15));
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: 35px;
+        }
+
+        .nav-item {
+            position: relative;
+            color: #555;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            padding: 12px 20px;
+            border-radius: 25px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-item:hover {
+            color: #333;
+            background: rgba(100, 100, 100, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .nav-item.active {
+            background: rgba(100, 100, 100, 0.12);
+            color: #333;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(100, 100, 100, 0.05);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.5s ease, height 0.5s ease;
+        }
+
+        .nav-item:hover::before {
+            width: 100px;
+            height: 100px;
+        }
+
+        .lang-switch {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: 15px;
+            padding: 4px 6px;
+            border-radius: 20px;
+            background: rgba(100, 100, 100, 0.06);
+            transition: all 0.3s ease;
+        }
+
+        .lang-switch:hover {
+            background: rgba(100, 100, 100, 0.1);
+        }
+
+        .lang-btn {
+            padding: 7px 16px;
+            border: none;
+            border-radius: 18px;
+            background: transparent;
+            color: #666;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .lang-btn.active {
+            background: #444;
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .lang-btn:hover:not(.active) {
+            color: #333;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .content {
+            position: relative;
+            z-index: 100;
+            margin-top: 90px;
+            min-height: calc(100vh - 70px);
+            padding: 60px 80px;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .services-section {
+            display: flex;
+            align-items: center;
+            gap: 80px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .services-grid {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .service-item {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            padding: 35px 25px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .service-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        .service-item.new::before {
+            content: 'NEW';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #e74c3c;
+            color: #fff;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 3px 10px;
+            transform: rotate(45deg);
+            box-shadow: 0 2px 10px rgba(231, 76, 60, 0.3);
+        }
+
+        .service-icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 20px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: #555;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .service-icon img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+        }
+
+        .service-item:nth-child(1) .service-icon {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border: 1px solid rgba(252, 182, 159, 0.3);
+        }
+        .service-item:nth-child(2) .service-icon {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border: 1px solid rgba(168, 237, 234, 0.3);
+        }
+        .service-item:nth-child(3) .service-icon {
+            background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%);
+            border: 1px solid rgba(210, 153, 194, 0.3);
+        }
+        .service-item:nth-child(4) .service-icon {
+            background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+            border: 1px solid rgba(137, 246, 254, 0.3);
+        }
+        .service-item:nth-child(5) .service-icon {
+            background: linear-gradient(135deg, #fddb92 0%, #d1fdff 100%);
+            border: 1px solid rgba(253, 219, 146, 0.3);
+        }
+        .service-item:nth-child(6) .service-icon {
+            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+            border: 1px solid rgba(224, 195, 252, 0.3);
+        }
+
+        .service-item:nth-child(1):hover .service-icon {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            box-shadow: 0 8px 30px rgba(238, 90, 36, 0.4);
+            transform: scale(1.1) rotate(5deg);
+        }
+        .service-item:nth-child(2):hover .service-icon {
+            background: linear-gradient(135deg, #00d2d3 0%, #54a0ff 100%);
+            box-shadow: 0 8px 30px rgba(0, 210, 211, 0.4);
+            transform: scale(1.1) rotate(5deg);
+        }
+        .service-item:nth-child(3):hover .service-icon {
+            background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+            box-shadow: 0 8px 30px rgba(155, 89, 182, 0.4);
+            transform: scale(1.1) rotate(5deg);
+        }
+        .service-item:nth-child(4):hover .service-icon {
+            background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+            box-shadow: 0 8px 30px rgba(0, 184, 148, 0.4);
+            transform: scale(1.1) rotate(5deg);
+        }
+        .service-item:nth-child(5):hover .service-icon {
+            background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%);
+            box-shadow: 0 8px 30px rgba(253, 203, 110, 0.4);
+            transform: scale(1.1) rotate(5deg);
+        }
+        .service-item:nth-child(6):hover .service-icon {
+            background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+            box-shadow: 0 8px 30px rgba(108, 92, 231, 0.4);
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .service-title {
+            font-size: 14px;
+            color: #333;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .service-desc {
+            font-size: 12px;
+            color: #999;
+            line-height: 1.5;
+        }
+
+        .services-info {
+            flex: 1;
+            padding-left: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .service-detail {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .service-detail.animate h2,
+        .service-detail.animate p {
+            animation: slideInRight 0.4s ease-out forwards;
+        }
+
+        .service-detail h2 {
+            font-size: 44px;
+            color: #333;
+            font-weight: 700;
+            margin-bottom: 15px;
+            line-height: 1.15;
+            opacity: 0;
+            transform: translateX(20px);
+        }
+
+        .service-detail p {
+            font-size: 17px;
+            color: #666;
+            line-height: 1.9;
+            margin-bottom: 35px;
+            max-width: 450px;
+            opacity: 0;
+            transform: translateX(20px);
+        }
+
+        .service-detail.animate h2 {
+            animation-delay: 0s;
+        }
+
+        .service-detail.animate p {
+            animation-delay: 0.15s;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 28px;
+            background: #333;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            align-self: flex-start;
+            width: fit-content;
+        }
+
+        .btn:hover {
+            background: #dc3545;
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 10px 40px rgba(220, 53, 69, 0.4);
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.5s ease, height 0.5s ease;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-arrow {
+            font-size: 16px;
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover .btn-arrow {
+            transform: translateX(5px);
+        }
+
+        .focus-section {
+            position: relative;
+            z-index: 90;
+            margin-top: -20px;
+            padding: 28px 0;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.9);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .focus-content {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 25px;
+        }
+
+        .focus-content::before,
+        .focus-content::after {
+            content: '';
+            width: 50px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #888);
+        }
+
+        .focus-content::after {
+            background: linear-gradient(90deg, #888, transparent);
+        }
+
+        .focus-text {
+            font-size: 20px;
+            color: #444;
+            font-weight: 500;
+            letter-spacing: 2px;
+        }
+
+        .core-section {
+            position: relative;
+            z-index: 80;
+            padding: 60px 80px;
+            background: rgba(248, 248, 248, 0.9);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .core-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .core-item {
+            text-align: center;
+            padding: 40px 30px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 16px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .core-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #666, #999);
+            transform: translateX(-50%);
+            transition: width 0.4s ease;
+        }
+
+        .core-item:hover::before {
+            width: 60px;
+        }
+
+        .core-item:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.12);
+            background: rgba(255, 255, 255, 0.98);
+        }
+
+        .core-item:nth-child(1) .core-icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #e8eef8 0%, #d9e2f3 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+        }
+        .core-item:nth-child(2) .core-icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #fce4f3 0%, #f8d4e8 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(245, 87, 108, 0.2);
+        }
+        .core-item:nth-child(3) .core-icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #e0f4ff 0%, #c7e8f7 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(79, 172, 254, 0.2);
+        }
+
+        .core-icon img {
+            width: 45px;
+            height: 45px;
+            object-fit: contain;
+        }
+
+        .core-item:nth-child(1):hover .core-icon {
+            transform: scale(1.15) rotate(5deg);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.4);
+        }
+        .core-item:nth-child(2):hover .core-icon {
+            transform: scale(1.15) rotate(5deg);
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            box-shadow: 0 8px 30px rgba(245, 87, 108, 0.4);
+        }
+        .core-item:nth-child(3):hover .core-icon {
+            transform: scale(1.15) rotate(5deg);
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            box-shadow: 0 8px 30px rgba(79, 172, 254, 0.4);
+        }
+
+        .core-title {
+            font-size: 20px;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+
+        .core-item:hover .core-title {
+            color: #444;
+        }
+
+        .core-desc {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.7;
+            margin: 0;
+            transition: color 0.3s ease;
+        }
+
+        .core-item:hover .core-desc {
+            color: #555;
+        }
+
+        .about-section {
+            position: relative;
+            z-index: 70;
+            padding: 60px 0 80px;
+            overflow: hidden;
+        }
+
+        .about-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .about-title {
+            font-size: 36px;
+            color: #333;
+            font-weight: 700;
+            letter-spacing: 3px;
+        }
+
+        .title-dot {
+            color: #999;
+            margin: 0 12px;
+            font-size: 24px;
+        }
+
+        .about-bg-left,
+        .about-bg-right {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            opacity: 0.5;
+        }
+
+        .about-bg-left {
+            left: 0;
+            padding-left: 40px;
+        }
+
+        .about-bg-right {
+            right: 0;
+            padding-right: 40px;
+            gap: 60px;
+        }
+
+        .partner-column {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .partner-item {
+            font-size: 16px;
+            color: #333;
+            font-weight: 500;
+            white-space: nowrap;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 25px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            opacity: 0.9;
+            animation: partnerFloat 4s ease-in-out infinite;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .partner-item:hover {
+            background: rgba(255, 255, 255, 0.98);
+            color: #333;
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+            opacity: 1;
+        }
+
+        .about-bg-left .partner-item:nth-child(1) { animation-delay: 0s; }
+        .about-bg-left .partner-item:nth-child(2) { animation-delay: 1s; }
+        
+        .about-bg-right .partner-column:first-child .partner-item:nth-child(1) { animation-delay: 0.5s; }
+        .about-bg-right .partner-column:first-child .partner-item:nth-child(2) { animation-delay: 1.5s; }
+        .about-bg-right .partner-column:last-child .partner-item:nth-child(1) { animation-delay: 0.8s; }
+        .about-bg-right .partner-column:last-child .partner-item:nth-child(2) { animation-delay: 1.8s; }
+
+        @keyframes partnerFloat {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .about-content {
+            max-width: 650px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 45px 65px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+        }
+
+        .about-title {
+            font-size: 32px;
+            color: #333;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        .about-divider {
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #888, transparent);
+            margin: 0 auto 30px;
+        }
+
+        .about-desc {
+            font-size: 16px;
+            color: #555;
+            line-height: 1.9;
+            margin-bottom: 20px;
+            text-align: justify;
+            text-indent: 2em;
+        }
+
+        .about-desc:last-child {
+            margin-bottom: 0;
+        }
+
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, #fafafa 0%, #e8e8e8 50%, #d5d5d5 100%);
+        }
+
+        .star-field {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            background: #666;
+            border-radius: 50%;
+        }
+
+        .star.small { width: 1px; height: 1px; opacity: 0.3; animation: twinkle 3s ease-in-out infinite; }
+        .star.medium { width: 2px; height: 2px; opacity: 0.5; animation: twinkle 4s ease-in-out infinite; }
+        .star.large { width: 3px; height: 3px; opacity: 0.7; animation: twinkle 5s ease-in-out infinite; }
+        .star.float { width: 2px; height: 2px; opacity: 0.4; animation: floatStar 8s ease-in-out infinite; }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.3); }
+        }
+
+        @keyframes floatStar {
+            0%, 100% { opacity: 0.2; transform: translateY(0) translateX(0); }
+            25% { opacity: 0.8; transform: translateY(-5px) translateX(3px); }
+            50% { opacity: 0.4; transform: translateY(-3px) translateX(-3px); }
+            75% { opacity: 0.6; transform: translateY(-8px) translateX(2px); }
+        }
+
+        .planet-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            animation: containerFloat 12s ease-in-out infinite;
+        }
+
+        @keyframes containerFloat {
+            0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
+            25% { transform: translate(-48%, -52%) rotate(1deg); }
+            50% { transform: translate(-50%, -48%) rotate(0deg); }
+            75% { transform: translate(-52%, -50%) rotate(-1deg); }
+        }
+
+        .planet {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 30%, #c8c8c8 60%, #a8a8a8 100%);
+            box-shadow: 
+                inset -30px -20px 60px rgba(0,0,0,0.15),
+                inset 20px 10px 40px rgba(255,255,255,0.8),
+                0 20px 60px rgba(0,0,0,0.1),
+                0 0 100px rgba(150,150,150,0.3);
+            animation: planetRotate 20s linear infinite;
+        }
+
+        .planet::before {
+            content: '';
+            position: absolute;
+            top: 20%;
+            left: 30%;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.6) 0%, rgba(200,200,200,0.3) 50%, transparent 70%);
+            animation: spotPulse 4s ease-in-out infinite;
+        }
+
+        .planet::after {
+            content: '';
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            width: 50px;
+            height: 25px;
+            border-radius: 50%;
+            background: rgba(180,180,180,0.3);
+            transform: rotate(-30deg);
+        }
+
+        @keyframes planetRotate {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        @keyframes spotPulse {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 0.9; transform: scale(1.1); }
+        }
+
+        .ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotateX(70deg);
+            border-radius: 50%;
+            border: 2px solid rgba(150, 150, 150, 0.4);
+        }
+
+        .ring.r1 { width: 350px; height: 350px; animation: ringRotate1 25s linear infinite; }
+        .ring.r2 { width: 420px; height: 420px; border-width: 1px; animation: ringRotate2 35s linear infinite reverse; }
+        .ring.r3 { width: 500px; height: 500px; border-width: 1.5px; animation: ringRotate3 45s linear infinite; }
+
+        @keyframes ringRotate1 {
+            from { transform: translate(-50%, -50%) rotateX(70deg) rotateZ(0deg); }
+            to { transform: translate(-50%, -50%) rotateX(70deg) rotateZ(360deg); }
+        }
+
+        @keyframes ringRotate2 {
+            from { transform: translate(-50%, -50%) rotateX(70deg) rotateZ(0deg); }
+            to { transform: translate(-50%, -50%) rotateX(70deg) rotateZ(360deg); }
+        }
+
+        @keyframes ringRotate3 {
+            from { transform: translate(-50%, -50%) rotateX(70deg) rotateZ(0deg); }
+            to { transform: translate(-50%, -50%) rotateX(70deg) rotateZ(360deg); }
+        }
+
+        .glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(200,200,200,0.2) 0%, transparent 70%);
+        }
+
+        .glow.g1 { width: 400px; height: 400px; animation: glowPulse 4s ease-in-out infinite; }
+        .glow.g2 { width: 550px; height: 550px; animation: glowPulse 6s ease-in-out infinite 1s; }
+        .glow.g3 { width: 700px; height: 700px; animation: glowPulse 8s ease-in-out infinite 2s; }
+
+        @keyframes glowPulse {
+            0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 0.6; transform: translate(-50%, -50%) scale(1.05); }
+        }
+
+        .shooting-star {
+            position: absolute;
+            width: 80px;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(80,80,80,0.9) 0%, rgba(120,120,120,0.2) 100%);
+            opacity: 0;
+        }
+
+        @keyframes shoot {
+            0% { transform: translateX(-100px) translateY(0) rotate(-45deg); opacity: 0; }
+            10% { opacity: 1; }
+            60% { opacity: 0.5; }
+            100% { transform: translateX(100vw) translateY(80vh) rotate(-45deg); opacity: 0; }
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: rgba(100,100,100,0.3);
+        }
+
+        @keyframes particleFloat {
+            0%, 100% { transform: translateY(0) translateX(0) scale(1); opacity: 0.3; }
+            25% { transform: translateY(-20px) translateX(10px) scale(1.2); opacity: 0.6; }
+            50% { transform: translateY(-10px) translateX(-10px) scale(0.8); opacity: 0.4; }
+            75% { transform: translateY(-30px) translateX(5px) scale(1.1); opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <a href="#" title="智神星">
+                <img src="images/logo-default-169x24.png" alt="智神星">
+            </a>
+        </div>
+        <nav class="nav">
+            <a href="#" class="nav-item active" data-lang-key="home">网站首页</a>
+            <a href="about.html" class="nav-item" data-lang-key="about">公司简介</a>
+            <a href="product-intro.html" class="nav-item" data-lang-key="products">产品与服务</a>
+            <div class="lang-switch">
+                <button class="lang-btn active" data-lang="zh" onclick="switchLang('zh')">中文</button>
+                <button class="lang-btn" data-lang="en" onclick="switchLang('en')">English</button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="content" >
+        <section class="services-section" >
+            <div class="services-grid">
+                <div class="service-item" data-index="0">
+                    <div class="service-icon"><img src="images/网页设计.png" alt="网页设计"></div>
+                    <div class="service-title">高端网页设计</div>
+                    <div class="service-desc">专业的网站设计服务，打造高品质企业形象</div>
+                </div>
+                <div class="service-item" data-index="1">
+                    <div class="service-icon"><img src="images/小程序开发.png" alt="小程序开发"></div>
+                    <div class="service-title">小程序开发</div>
+                    <div class="service-desc">一站式微信小程序开发解决方案</div>
+                </div>
+                <div class="service-item" data-index="2">
+                    <div class="service-icon"><img src="images/软件开发.png" alt="软件开发"></div>
+                    <div class="service-title">软件开发服务</div>
+                    <div class="service-desc">定制化软件解决方案，助力企业数字化转型</div>
+                </div>
+                <div class="service-item" data-index="3">
+                    <div class="service-icon"><img src="images/网页开发.png" alt="网页开发"></div>
+                    <div class="service-title">网页与H5页面开发</div>
+                    <div class="service-desc">响应式网页与创意H5互动页面开发</div>
+                </div>
+                <div class="service-item" data-index="4">
+                    <div class="service-icon"><img src="images/数据运维.png" alt="数据运维"></div>
+                    <div class="service-title">IT技术服务与运维</div>
+                    <div class="service-desc">专业IT技术支持与系统运维服务</div>
+                </div>
+                <div class="service-item" data-index="5">
+                    <div class="service-icon"><img src="images/云计算.png" alt="云计算"></div>
+                    <div class="service-title">云计算、大数据与AI智能业务</div>
+                    <div class="service-desc">云计算架构、大数据分析与AI智能解决方案</div>
+                </div>
+            </div>
+            <div class="services-info">
+                <div class="service-detail animate" id="serviceDetail">
+                    <h2 id="detailTitle">您需要的服务<br>这里都有</h2>
+                    <p id="detailDesc">智神星提供全方位的互联网信息技术服务方案，高效、便捷、简洁而强大的，专为您服务。</p>
+                </div>
+                <a href="product-intro.html" class="btn">查看服务案例<span class="btn-arrow">→</span></a>
+            </div>
+        </section>
+    </main>
+
+    <section class="focus-section" style="margin-top: 20px;">
+        <div class="focus-content">
+            <span class="focus-text">专注于物联网、大数据技术和人工智能领域的核心产品</span>
+        </div>
+    </section>
+
+    <section class="core-section">
+        <div class="core-container">
+                <div class="core-item">
+                    <div class="core-icon">
+                        <img src="images/iot 物联网平台.png" alt="物联网应用">
+                    </div>
+                    <h3 class="core-title">物联网应用</h3>
+                    <p class="core-desc">致力于智能硬件的研发，为用户快速构建IoT场景智能化解决方案。</p>
+                </div>
+                <div class="core-item">
+                    <div class="core-icon">
+                        <img src="images/大数据.png" alt="大数据技术">
+                    </div>
+                    <h3 class="core-title">大数据技术</h3>
+                    <p class="core-desc">致力于机器学习和大数据分析等关键技术的研发，快速构建智能化的大数据应用。</p>
+                </div>
+                <div class="core-item">
+                    <div class="core-icon">
+                        <img src="images/机器人.png" alt="人工智能">
+                    </div>
+                    <h3 class="core-title">人工智能</h3>
+                    <p class="core-desc">致力于AI视觉视觉技术的研究，快速构建智能AI视觉系统。</p>
+                </div>
+            </div>
+    </section>
+
+    <section class="about-section">
+        <div class="about-header">
+            <h2 class="about-title">智神星网络 <span class="title-dot">·</span> 合作伙伴</h2>
+        </div>
+        <div class="about-bg-left">
+            <div class="partner-column">
+                <span class="partner-item">美国Boxnearby</span>
+                <span class="partner-item">数字融合(北京)科技有限公司</span>
+            </div>
+        </div>
+        <div class="about-bg-right">
+            <div class="partner-column">
+                <span class="partner-item">南京大学人工智能学院</span>
+                <span class="partner-item">海康机器人</span>
+            </div>
+            <div class="partner-column">
+                <span class="partner-item">东南大学</span>
+                <span class="partner-item">AMK</span>
+            </div>
+        </div>
+        <div class="about-content">
+            <h2 class="about-title">智神星网络科技有限公司</h2>
+            <div class="about-divider"></div>
+            <p class="about-desc">
+                南京智神星网络科技有限公司成立于六朝古都南京，公司成立以来专注于物联网应用、机器学习和数据分析、NLP自然语言处理和人工智能等领域，是中国优秀的软件服务提供商。
+            </p>
+            <p class="about-desc">
+                智神星致力于为各行业客户提供高质量的技术服务，我们拥有丰富的系统经验，我们坚信每一个成功的项目都是良好的团队合作的成果，我们共同思考与创新，为客户提供高质量的解决方案和技术服务。
+            </p>
+        </div>
+    </section>
+
+    <div class="background">
+        <div class="star-field" id="stars"></div>
+        <div class="shooting-stars" id="shootingStars"></div>
+        <div class="particles" id="particles"></div>
+        <div class="glow g3"></div>
+        <div class="glow g2"></div>
+        <div class="glow g1"></div>
+        <div class="ring r3"></div>
+        <div class="ring r2"></div>
+        <div class="ring r1"></div>
+        <div class="planet-container">
+            <div class="planet"></div>
+        </div>
+    </div>
+
+    <script>
+        const createStars = () => {
+            const container = document.getElementById('stars');
+            const starCount = 120;
+            
+            for (let i = 0; i < starCount; i++) {
+                const types = ['small', 'medium', 'large', 'float', 'small', 'medium', 'small', 'float'];
+                const star = document.createElement('div');
+                const type = types[Math.floor(Math.random() * types.length)];
+                star.className = `star ${type}`;
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 5 + 's';
+                star.style.animationDuration = (2 + Math.random() * 4) + 's';
+                container.appendChild(star);
+            }
+        };
+
+        const createShootingStars = () => {
+            const container = document.getElementById('shootingStars');
+            const count = 5;
+            
+            for (let i = 0; i < count; i++) {
+                const shootingStar = document.createElement('div');
+                shootingStar.className = 'shooting-star';
+                shootingStar.style.top = Math.random() * 30 + '%';
+                shootingStar.style.left = Math.random() * 20 + '%';
+                shootingStar.style.animation = `shoot ${(3 + Math.random() * 2)}s ease-in-out infinite`;
+                shootingStar.style.animationDelay = (i * 6 + Math.random() * 4) + 's';
+                container.appendChild(shootingStar);
+            }
+        };
+
+        const createParticles = () => {
+            const container = document.getElementById('particles');
+            const count = 25;
+            
+            for (let i = 0; i < count; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = (20 + Math.random() * 60) + '%';
+                particle.style.top = (20 + Math.random() * 60) + '%';
+                particle.style.width = (2 + Math.random() * 4) + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.animation = `particleFloat ${(6 + Math.random() * 6)}s ease-in-out infinite`;
+                particle.style.animationDelay = Math.random() * 8 + 's';
+                container.appendChild(particle);
+            }
+        };
+
+        createStars();
+        createShootingStars();
+        createParticles();
+
+        const serviceDetails = [
+            {
+                title: '高端网页设计',
+                desc: '提供专业的网站设计服务，包括企业官网、电商平台、品牌网站等，采用现代设计理念，打造高品质企业形象，提升品牌影响力。'
+            },
+            {
+                title: '小程序开发',
+                desc: '一站式微信小程序开发解决方案，涵盖电商小程序、服务预约小程序、会员系统等，助力企业快速接入微信生态，拓展业务渠道。'
+            },
+            {
+                title: '软件开发服务',
+                desc: '定制化软件解决方案，根据客户需求量身定制各类管理系统、业务平台，助力企业数字化转型，提升运营效率。'
+            },
+            {
+                title: '网页与H5页面开发',
+                desc: '响应式网页设计与开发，适配各种终端设备；创意H5互动页面开发，包括营销活动页、产品展示页等，提升用户体验和品牌曝光度。'
+            },
+            {
+                title: 'IT技术服务与运维',
+                desc: '专业IT技术支持与系统运维服务，包括服务器维护、网络管理、系统优化、安全防护等，确保企业IT系统稳定运行。'
+            },
+            {
+                title: '云计算、大数据与AI智能业务',
+                desc: '云计算架构设计与部署、大数据分析与挖掘、AI智能系统开发，帮助企业实现数据驱动决策，提升智能化水平。'
+            }
+        ];
+
+        const serviceItems = document.querySelectorAll('.service-item');
+        const detailTitle = document.getElementById('detailTitle');
+        const detailDesc = document.getElementById('detailDesc');
+        const serviceDetail = document.getElementById('serviceDetail');
+
+        let currentIndex = -1;
+        let timeout = null;
+
+        serviceItems.forEach((item, index) => {
+            item.addEventListener('mouseenter', () => {
+                if (timeout) clearTimeout(timeout);
+                
+                currentIndex = index;
+                const detail = serviceDetails[index];
+                
+                serviceDetail.classList.remove('animate');
+                void serviceDetail.offsetWidth;
+                serviceDetail.classList.add('animate');
+                
+                detailTitle.innerHTML = detail.title;
+                detailDesc.textContent = detail.desc;
+            });
+
+            item.addEventListener('mouseleave', () => {
+                timeout = setTimeout(() => {
+                    if (currentIndex === index) {
+                        serviceDetail.classList.remove('animate');
+                        void serviceDetail.offsetWidth;
+                        serviceDetail.classList.add('animate');
+                        detailTitle.innerHTML = '您需要的服务<br>这里都有';
+                        detailDesc.textContent = '智神星提供全方位的互联网信息技术服务方案，高效、便捷、简洁而强大的，专为您服务。';
+                    }
+                }, 300);
+            });
+        });
+
+        const navItems = document.querySelectorAll('.nav-item');
+        const langBtns = document.querySelectorAll('.lang-btn');
+        
+        function updatePageContent(lang) {
+            var titleEl = document.querySelector('title');
+            if (titleEl) {
+                titleEl.textContent = translations[lang].index.heroTitle;
+            }
+
+            var serviceItems = document.querySelectorAll('.service-item');
+            var serviceKeys = ['webDesign', 'miniProgram', 'softwareDev', 'webDev', 'itOps', 'cloudAI'];
+            serviceItems.forEach(function(item, index) {
+                var key = serviceKeys[index];
+                if (key && translations[lang].index.services[key]) {
+                    var titleEl = item.querySelector('.service-title');
+                    var descEl = item.querySelector('.service-desc');
+                    if (titleEl) titleEl.textContent = translations[lang].index.services[key].title;
+                    if (descEl) descEl.textContent = translations[lang].index.services[key].desc;
+                }
+            });
+
+            var detailTitle = document.getElementById('detailTitle');
+            if (detailTitle) {
+                detailTitle.innerHTML = translations[lang].index.serviceDetail.title;
+            }
+
+            var detailDesc = document.getElementById('detailDesc');
+            if (detailDesc) {
+                detailDesc.textContent = translations[lang].index.serviceDetail.desc;
+            }
+
+            var viewCasesBtn = document.querySelector('.btn');
+            if (viewCasesBtn) {
+                viewCasesBtn.innerHTML = translations[lang].index.viewCases + '<span class="btn-arrow">→</span>';
+            }
+
+            var focusText = document.querySelector('.focus-text');
+            if (focusText) {
+                focusText.textContent = translations[lang].index.focusText;
+            }
+
+            var coreItems = document.querySelectorAll('.core-item');
+            var coreKeys = ['coreIot', 'coreBigdata', 'coreAi'];
+            coreItems.forEach(function(item, index) {
+                var key = coreKeys[index];
+                if (key && translations[lang].index[key]) {
+                    var titleEl = item.querySelector('.core-title');
+                    var descEl = item.querySelector('.core-desc');
+                    if (titleEl) titleEl.textContent = translations[lang].index[key].title;
+                    if (descEl) descEl.textContent = translations[lang].index[key].desc;
+                }
+            });
+
+            var aboutHeader = document.querySelector('.about-section .about-header .about-title');
+            if (aboutHeader) {
+                aboutHeader.innerHTML = translations[lang].index.aboutHeader;
+            }
+
+            var aboutCompany = document.querySelector('.about-content .about-title');
+            if (aboutCompany) {
+                aboutCompany.textContent = translations[lang].index.aboutCompany;
+            }
+
+            var aboutDescs = document.querySelectorAll('.about-content .about-desc');
+            if (aboutDescs[0]) aboutDescs[0].textContent = translations[lang].index.aboutDesc1;
+            if (aboutDescs[1]) aboutDescs[1].textContent = translations[lang].index.aboutDesc2;
+        }
+    </script>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="section-title" data-lang-role="footer" data-lang-key="contact">联系我们</div>
+                <div class="contact-info">
+                    <p data-lang-role="footer" data-lang-key="company">南京智神星网络科技有限公司</p>
+                    <p data-lang-role="footer" data-lang-key="phone">电话：025-85550510</p>
+                    <p data-lang-role="footer" data-lang-key="email">邮箱：postmaster@xpallas.com</p>
+                    <p data-lang-role="footer" data-lang-key="address">南京市建邺区中和路121号云座中和1008室</p>
+                </div>
+            </div>
+
+            <div class="footer-divider"></div>
+
+            <div class="footer-section">
+                <div class="section-title" data-lang-role="footer" data-lang-key="partners">合作伙伴</div>
+                <ul class="partner-list" data-lang-role="footer" data-lang-key="partnerList">
+                    <li>南京大学人工智能学院</li>
+                    <li>东南大学</li>
+                    <li>数字融合(北京)科技有限公司</li>
+                    <li>海康机器人</li>
+                    <li>AMK</li>
+                    <li>美国Boxnearby</li>
+                </ul>
+            </div>
+
+            <div class="footer-divider"></div>
+
+            <div class="footer-section">
+                <div class="section-title" data-lang-role="footer" data-lang-key="products">产品及解决方案</div>
+                <ul class="product-list" data-lang-role="footer" data-lang-key="productList">
+                    <li>物联网应用</li>
+                    <li>大数据分析</li>
+                    <li>人工智能</li>
+                </ul>
+            </div>
+
+            <div class="footer-divider"></div>
+
+            <div class="footer-section qr-section">
+                <div class="qr-item">
+                    <span class="qr-label" data-lang-role="footer" data-lang-key="technical">技术支持</span>
+                    <img src="images/aidpt.png" alt="技术支持" class="qr-code">
+                </div>
+                <div class="qr-item">
+                    <span class="qr-label" data-lang-role="footer" data-lang-key="follow">关注我们</span>
+                    <img src="images/qrcode.jpg" alt="关注我们" class="qr-code">
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p data-lang-role="footer" data-lang-key="copyright">© 2026 南京智神星网络科技有限公司 保留所有权利,苏ICP备18832355号-1</p>
+        </div>
+    </footer>
+
+    <style>
+        .footer {
+            background: linear-gradient(135deg, #4a4a4a 0%, #333 100%);
+            color: #fff;
+            padding: 50px 0 25px;
+            position: relative;
+            z-index: 100;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            padding: 0 30px;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 200px;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            letter-spacing: 2px;
+        }
+
+        .contact-info p {
+            font-size: 13px;
+            line-height: 2;
+            color: rgba(255, 255, 255, 0.8);
+            margin: 8px 0;
+        }
+
+        .partner-list, .product-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .partner-list li, .product-list li {
+            font-size: 13px;
+            line-height: 2.2;
+            color: rgba(255, 255, 255, 0.8);
+            transition: color 0.3s;
+        }
+
+        .partner-list li:hover, .product-list li:hover {
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .footer-divider {
+            width: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 0 10px;
+        }
+
+        .qr-section {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 15px;
+        }
+
+        .qr-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            width: 100px;
+        }
+
+        .qr-label {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            width: 100%;
+        }
+
+        .qr-code {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-bottom p {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            margin: 0;
+        }
+    </style>
+</body>
+</html>
