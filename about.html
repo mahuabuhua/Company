@@ -75,7 +75,7 @@
 
         .nav-item {
             position: relative;
-            color: #555;
+            color: #5a6a8a;
             text-decoration: none;
             font-size: 15px;
             font-weight: 500;
@@ -85,14 +85,14 @@
         }
 
         .nav-item:hover {
-            color: #333;
-            background: rgba(100, 100, 100, 0.08);
+            color: #4a5a7a;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
             transform: translateY(-2px);
         }
 
         .nav-item.active {
-            background: rgba(100, 100, 100, 0.12);
-            color: #333;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+            color: #4a5a7a;
         }
 
         .nav-item::before {
@@ -102,7 +102,7 @@
             left: 50%;
             width: 0;
             height: 0;
-            background: rgba(100, 100, 100, 0.05);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.06) 0%, rgba(118, 75, 162, 0.06) 100%);
             border-radius: 50%;
             transform: translate(-50%, -50%);
             transition: width 0.5s ease, height 0.5s ease;
@@ -120,12 +120,14 @@
             margin-left: 15px;
             padding: 4px 6px;
             border-radius: 20px;
-            background: rgba(100, 100, 100, 0.06);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
             transition: all 0.3s ease;
+            border: 1px solid rgba(102, 126, 234, 0.15);
         }
 
         .lang-switch:hover {
-            background: rgba(100, 100, 100, 0.1);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.12) 0%, rgba(118, 75, 162, 0.12) 100%);
+            border-color: rgba(102, 126, 234, 0.25);
         }
 
         .lang-btn {
@@ -133,7 +135,7 @@
             border: none;
             border-radius: 18px;
             background: transparent;
-            color: #666;
+            color: #5a6a8a;
             font-size: 14px;
             font-weight: 500;
             cursor: pointer;
@@ -141,14 +143,14 @@
         }
 
         .lang-btn.active {
-            background: #444;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: #fff;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.35);
         }
 
         .lang-btn:hover:not(.active) {
-            color: #333;
-            background: rgba(255, 255, 255, 0.8);
+            color: #4a5a7a;
+            background: rgba(255, 255, 255, 0.9);
         }
 
         .main-content {
@@ -406,6 +408,14 @@
         .timeline-item:nth-child(10) { animation-delay: 1.0s; }
         .timeline-item:nth-child(11) { animation-delay: 1.1s; }
         .timeline-item:nth-child(12) { animation-delay: 1.2s; }
+        .timeline-item:nth-child(13) { animation-delay: 1.3s; }
+        .timeline-item:nth-child(14) { animation-delay: 1.4s; }
+        .timeline-item:nth-child(15) { animation-delay: 1.5s; }
+        .timeline-item:nth-child(16) { animation-delay: 1.6s; }
+        .timeline-item:nth-child(17) { animation-delay: 1.7s; }
+        .timeline-item:nth-child(18) { animation-delay: 1.8s; }
+        .timeline-item:nth-child(19) { animation-delay: 1.9s; }
+        .timeline-item:nth-child(20) { animation-delay: 2.0s; }
 
         @keyframes slideIn {
             to {
@@ -842,6 +852,62 @@
                             <div class="timeline-card">
                                 <div class="timeline-year">2022年5月</div>
                                 <div class="timeline-content">研发智能AI行为监控系统，拓展人工智能业务。</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-card">
+                                <div class="timeline-year">2023年7月</div>
+                                <div class="timeline-content">与南京笃定思进信息技术有限公司合作，完成超声波焊机软件系统定制开发。</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-card">
+                                <div class="timeline-year">2024年3月</div>
+                                <div class="timeline-content">与江苏省疾控中心合作，完成空气质量健康指数发布平台维护和升级。</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-card">
+                                <div class="timeline-year">2024年4月</div>
+                                <div class="timeline-content">与苏州市疾病预防控制中心合作，完成空气质量健康指数发布平台建设和发布。</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-card">
+                                <div class="timeline-year">2024年10月</div>
+                                <div class="timeline-content">与江苏省疾控中心合作，完成江苏省寒潮对人群健康影响预警数据发布系统。</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-card">
+                                <div class="timeline-year">2024年11月</div>
+                                <div class="timeline-content">与深圳市美好憧憬科技有限公司合作，完成AI智能小车软件功能开发。</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-card">
+                                <div class="timeline-year">2025年2月</div>
+                                <div class="timeline-content">与江苏省疾控中心合作，完成臭氧及其前体污染物为特色的大气复合污染健康风险预警发布平台。</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-card">
+                                <div class="timeline-year">2025年5月</div>
+                                <div class="timeline-content">与江苏省疾控中心合作，完成江苏省高温健康风险预报预警数据发布系统。</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-card">
+                                <div class="timeline-year">2025年8月</div>
+                                <div class="timeline-content">与南京大数铁马信息科技有限公司合作，完成文档内容智能分析与审核算法开发；与南通市疾病预防控制中心合作，完成空气质量健康指数发布平台建设和发布。</div>
                             </div>
                         </div>
                         <div class="timeline-item">

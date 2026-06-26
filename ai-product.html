@@ -74,7 +74,7 @@
 
         .nav-item {
             position: relative;
-            color: #555;
+            color: #5a6a8a;
             text-decoration: none;
             font-size: 15px;
             font-weight: 500;
@@ -84,14 +84,14 @@
         }
 
         .nav-item:hover {
-            color: #333;
-            background: rgba(100, 100, 100, 0.08);
+            color: #4a5a7a;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
             transform: translateY(-2px);
         }
 
         .nav-item.active {
-            background: rgba(100, 100, 100, 0.12);
-            color: #333;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+            color: #4a5a7a;
         }
 
         .nav-item::before {
@@ -101,7 +101,7 @@
             left: 50%;
             width: 0;
             height: 0;
-            background: rgba(100, 100, 100, 0.05);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.06) 0%, rgba(118, 75, 162, 0.06) 100%);
             border-radius: 50%;
             transform: translate(-50%, -50%);
             transition: width 0.5s ease, height 0.5s ease;
@@ -119,12 +119,14 @@
             margin-left: 15px;
             padding: 4px 6px;
             border-radius: 20px;
-            background: rgba(100, 100, 100, 0.06);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
             transition: all 0.3s ease;
+            border: 1px solid rgba(102, 126, 234, 0.15);
         }
 
         .lang-switch:hover {
-            background: rgba(100, 100, 100, 0.1);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.12) 0%, rgba(118, 75, 162, 0.12) 100%);
+            border-color: rgba(102, 126, 234, 0.25);
         }
 
         .lang-btn {
@@ -132,7 +134,7 @@
             border: none;
             border-radius: 18px;
             background: transparent;
-            color: #666;
+            color: #5a6a8a;
             font-size: 14px;
             font-weight: 500;
             cursor: pointer;
@@ -140,14 +142,14 @@
         }
 
         .lang-btn.active {
-            background: #444;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: #fff;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.35);
         }
 
         .lang-btn:hover:not(.active) {
-            color: #333;
-            background: rgba(255, 255, 255, 0.8);
+            color: #4a5a7a;
+            background: rgba(255, 255, 255, 0.9);
         }
 
         .content {
@@ -431,6 +433,70 @@
         <div class="cases-container">
             <div class="case-card">
                 <div class="case-image-wrapper">
+                    <img src="images/一致性审查.png" alt="一致性审查系统" class="case-image">
+                    <div class="case-image-overlay">
+                        <span class="case-category">质量检测</span>
+                    </div>
+                </div>
+                <div class="case-content">
+                    <h3 class="case-title">一致性审查系统</h3>
+                    <p class="case-desc">基于人工智能算法的智能审查系统，提供文件关键词检测、文件重复率对比、关键词加重复率综合检测以及错别字检测等功能，确保文档质量与一致性。</p>
+                    <div class="case-highlight">
+                        <p>核心功能：关键词检测 · 重复率对比 · 综合检测 · 错别字检测</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="case-card">
+                <div class="case-image-wrapper">
+                    <img src="images/Boxnearby的AI引擎快递.png" alt="Boxnearby AI智能物流平台" class="case-image">
+                    <div class="case-image-overlay">
+                        <span class="case-category">智能物流</span>
+                    </div>
+                </div>
+                <div class="case-content">
+                    <h3 class="case-title">BoxNearby AI智能物流平台</h3>
+                    <p class="case-desc">基于AI的智能物流下单平台，用户通过自然语言描述寄件需求，AI自动解析地址、重量、尺寸等信息，实时对比USPS/UPS运费，用户选择服务后完成支付并生成运单。</p>
+                    <div class="case-highlight">
+                        <p>核心能力：自然语言处理 · 信息自动解析 · 运费实时对比 · 在线下单支付</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="case-card">
+                <div class="case-image-wrapper">
+                    <img src="images/细胞检测.png" alt="细胞检测的统计系统" class="case-image">
+                    <div class="case-image-overlay">
+                        <span class="case-category">医疗健康</span>
+                    </div>
+                </div>
+                <div class="case-content">
+                    <h3 class="case-title">细胞检测的统计系统</h3>
+                    <p class="case-desc">基于AI图像识别技术，对细胞样本进行自动检测和统计分析，辅助医学诊断和病理研究。</p>
+                    <div class="case-highlight">
+                        <p>核心功能：细胞识别 · 自动计数 · 病理分析 · 数据统计</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="case-card">
+                <div class="case-image-wrapper">
+                    <img src="images/ScreenShot_2026-06-26_142628_928.png" alt="智能避障车" class="case-image">
+                    <div class="case-image-overlay">
+                        <span class="case-category">智能机器人</span>
+                    </div>
+                </div>
+                <div class="case-content">
+                    <h3 class="case-title">智能避障车</h3>
+                    <p class="case-desc">基于激光雷达和视觉感知技术的智能避障车系统，实现自主导航、障碍物识别和自动避障功能。</p>
+                    <div class="case-highlight">
+                        <p>核心能力：自主导航 · 障碍物识别 · 自动避障 · 路径规划</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="case-card">
+                <div class="case-image-wrapper">
                     <img src="images/解决方案/smart_ids.png" alt="智能网络入侵检测系统" class="case-image">
                     <div class="case-image-overlay">
                         <span class="case-category">网络安全</span>
@@ -553,7 +619,7 @@
             }
 
             var caseCards = document.querySelectorAll('.case-card');
-            var caseKeys = ['intrusion', 'fraud', 'behavior'];
+            var caseKeys = ['consistency', 'aiExpress', 'cellDetection', 'obstacleAvoidance', 'intrusion', 'fraud', 'behavior'];
             caseCards.forEach(function(card, index) {
                 var key = caseKeys[index];
                 if (key && translations[lang].aiProduct.cases[key]) {

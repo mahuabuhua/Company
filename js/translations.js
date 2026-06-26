@@ -108,6 +108,14 @@ var translations = {
                     { year: '2020年12月', content: '承接部队差分仪项目并成功投入使用。' },
                     { year: '2021年3月', content: '公共防疫终端项目落地南京各学校、场馆、写字楼、博物馆。' },
                     { year: '2022年5月', content: '研发智能AI行为监控系统，拓展人工智能业务。' },
+                    { year: '2023年7月', content: '与南京笃定思进信息技术有限公司合作，完成超声波焊机软件系统定制开发。' },
+                    { year: '2024年3月', content: '与江苏省疾控中心合作，完成空气质量健康指数发布平台维护和升级。' },
+                    { year: '2024年4月', content: '与苏州市疾病预防控制中心合作，完成空气质量健康指数发布平台建设和发布。' },
+                    { year: '2024年10月', content: '与江苏省疾控中心合作，完成江苏省寒潮对人群健康影响预警数据发布系统。' },
+                    { year: '2024年11月', content: '与深圳市美好憧憬科技有限公司合作，完成AI智能小车软件功能开发。' },
+                    { year: '2025年2月', content: '与江苏省疾控中心合作，完成臭氧及其前体污染物为特色的大气复合污染健康风险预警发布平台。' },
+                    { year: '2025年5月', content: '与江苏省疾控中心合作，完成江苏省高温健康风险预报预警数据发布系统。' },
+                    { year: '2025年8月', content: '与南京大数铁马信息科技有限公司合作，完成文档内容智能分析与审核算法开发；与南通市疾病预防控制中心合作，完成空气质量健康指数发布平台建设和发布。' },
                     { year: '至今', content: '持续创新发展，书写新的篇章...' }
                 ]
             },
@@ -256,6 +264,30 @@ var translations = {
                     desc: '智能AI行为监控系统能主动识别场景内各种异常行为，一旦捕捉到类似行为立即预警，支持用户自定义行为识别规则。',
                     category: '智能监控',
                     highlight: '核心功能：异常行为识别 · 实时预警 · 自定义规则 · 智能监控'
+                },
+                consistency: {
+                    title: '一致性审查系统',
+                    desc: '基于人工智能算法的智能审查系统，提供文件关键词检测、文件重复率对比、关键词加重复率综合检测以及错别字检测等功能，确保文档质量与一致性。',
+                    category: '质量检测',
+                    highlight: '核心功能：关键词检测 · 重复率对比 · 综合检测 · 错别字检测'
+                },
+                aiExpress: {
+                    title: 'BoxNearby AI智能物流平台',
+                    desc: '基于AI的智能物流下单平台，用户通过自然语言描述寄件需求，AI自动解析地址、重量、尺寸等信息，实时对比USPS/UPS运费，用户选择服务后完成支付并生成运单。',
+                    category: '智能物流',
+                    highlight: '核心能力：自然语言处理 · 信息自动解析 · 运费实时对比 · 在线下单支付'
+                },
+                cellDetection: {
+                    title: '细胞检测的统计系统',
+                    desc: '基于AI图像识别技术，对细胞样本进行自动检测和统计分析，辅助医学诊断和病理研究。',
+                    category: '医疗健康',
+                    highlight: '核心功能：细胞识别 · 自动计数 · 病理分析 · 数据统计'
+                },
+                obstacleAvoidance: {
+                    title: '智能避障车',
+                    desc: '基于激光雷达和视觉感知技术的智能避障车系统，实现自主导航、障碍物识别和自动避障功能。',
+                    category: '智能机器人',
+                    highlight: '核心能力：自主导航 · 障碍物识别 · 自动避障 · 路径规划'
                 }
             }
         }
@@ -369,6 +401,14 @@ var translations = {
                     { year: 'December 2020', content: 'Undertook the military differential instrument project and successfully put it into use.' },
                     { year: 'March 2021', content: 'Public epidemic prevention terminal projects were deployed in various schools, venues, office buildings and museums in Nanjing.' },
                     { year: 'May 2022', content: 'Developed intelligent AI behavior monitoring system, expanding artificial intelligence business.' },
+                    { year: 'July 2023', content: 'Cooperated with Nanjing Duding Sijin Information Technology Co., Ltd. to complete customized software system development for ultrasonic welders.' },
+                    { year: 'March 2024', content: 'Cooperated with Jiangsu Provincial CDC to complete maintenance and upgrade of the Air Quality Health Index release platform.' },
+                    { year: 'April 2024', content: 'Cooperated with Suzhou CDC to complete construction and release of the Air Quality Health Index release platform.' },
+                    { year: 'October 2024', content: 'Cooperated with Jiangsu Provincial CDC to complete the cold wave health impact warning data release system for Jiangsu Province.' },
+                    { year: 'November 2024', content: 'Cooperated with Shenzhen Meihao Chongjing Technology Co., Ltd. to complete AI smart car software function development.' },
+                    { year: 'February 2025', content: 'Cooperated with Jiangsu Provincial CDC to complete the atmospheric composite pollution health risk warning platform featuring ozone and its precursor pollutants.' },
+                    { year: 'May 2025', content: 'Cooperated with Jiangsu Provincial CDC to complete the high-temperature health risk forecast and warning data release system for Jiangsu Province.' },
+                    { year: 'August 2025', content: 'Cooperated with Nanjing Dashu Tiema Information Technology Co., Ltd. to complete intelligent document content analysis and audit algorithm development; cooperated with Nantong CDC to complete construction and release of the Air Quality Health Index release platform.' },
                     { year: 'Present', content: 'Continuously innovating and developing, writing new chapters...' }
                 ]
             },
@@ -517,6 +557,30 @@ var translations = {
                     desc: 'The Smart AI Behavior Monitoring System can proactively identify various abnormal behaviors in scenes, immediately alert once similar behaviors are captured, and support user-defined behavior recognition rules.',
                     category: 'Smart Surveillance',
                     highlight: 'Core Features: Abnormal Behavior Recognition · Real-time Alert · Custom Rules · Intelligent Monitoring'
+                },
+                consistency: {
+                    title: 'Consistency Review System',
+                    desc: 'An intelligent review system based on AI algorithms, providing keyword detection in files, file duplicate rate comparison, comprehensive keyword and duplicate rate detection, and typo detection to ensure document quality and consistency.',
+                    category: 'Quality Inspection',
+                    highlight: 'Core Features: Keyword Detection · Duplicate Rate Comparison · Comprehensive Detection · Typo Detection'
+                },
+                aiExpress: {
+                    title: 'BoxNearby AI Smart Logistics Platform',
+                    desc: 'An AI-based smart logistics ordering platform where users describe shipping needs in natural language. AI automatically parses address, weight, dimensions, and other information, compares USPS/UPS shipping rates in real-time, and users select services to complete payment and generate shipping labels.',
+                    category: 'Smart Logistics',
+                    highlight: 'Core Capabilities: Natural Language Processing · Auto Information Parsing · Real-time Rate Comparison · Online Order Payment'
+                },
+                cellDetection: {
+                    title: 'Cell Detection Statistics System',
+                    desc: 'Based on AI image recognition technology, it automatically detects and statistically analyzes cell samples, assisting medical diagnosis and pathological research.',
+                    category: 'Healthcare',
+                    highlight: 'Core Features: Cell Recognition · Automatic Counting · Pathological Analysis · Data Statistics'
+                },
+                obstacleAvoidance: {
+                    title: 'Smart Obstacle Avoidance Vehicle',
+                    desc: 'Based on LiDAR and visual perception technology, the smart obstacle avoidance vehicle system realizes autonomous navigation, obstacle recognition and automatic obstacle avoidance functions.',
+                    category: 'Smart Robotics',
+                    highlight: 'Core Capabilities: Autonomous Navigation · Obstacle Recognition · Automatic Avoidance · Path Planning'
                 }
             }
         }
